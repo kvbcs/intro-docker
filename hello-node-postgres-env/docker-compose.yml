@@ -1,0 +1,31 @@
+services:
+    web:
+        build: ./app
+        ports:
+            - "${WEB_PORT}:3000"
+        environment:
+            GREETING_MSG: ${GREETING_MSG}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+            WEB_PORT: ${WEB_PORT}
+            DB_PORT: ${DB_PORT}
+        depends_on:
+            - db
+
+    db:
+        image: postgres:15
+        environment:
+            GREETING_MSG: ${GREETING_MSG}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+            WEB_PORT: ${WEB_PORT}
+            DB_PORT: ${DB_PORT}
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+
+volumes:
+    pgdata:
